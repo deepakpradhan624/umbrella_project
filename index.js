@@ -3,6 +3,8 @@ function changeColor(color) {
   const loader = document.getElementById("loader");
   const uploadLogo = document.getElementById("upload-logo");
   const logoPreview = document.getElementById("logoPreview");
+  const uploadContainer = document.querySelector(".upload-label");
+  const uploadText = document.getElementById("upload-text");
 
   loader.style.display = "block";
   umbrella.style.display = "none";
@@ -13,6 +15,8 @@ function changeColor(color) {
   uploadLogo.style.width = "18px";
   uploadLogo.style.animation = "spin 1s linear infinite";
 
+  uploadText.style.color = color === "yellow" ? "black" : "white";
+  uploadContainer.style.backgroundColor = color;
   setTimeout(() => {
     umbrella.src = `./Assests/umbrella-${color}.png`;
 
