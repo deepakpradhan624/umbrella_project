@@ -1,30 +1,31 @@
-function minPlanesRequired(fuel) {
-  let n = fuel.length;
+function minFlights(fuels) {
+    let path = [];
+    let airport = 0; // Start from the first airport
 
-  // If there's only one airport, we're already there
-  if (n === 1) return 0;
+    for (let i = 0; i < fuels.length; i++) {
+        path.push(fuels[airport]); // Store the fuel of the current airport
 
-  let planes = 0;
-  let position = 0; // The airport where we last took a plane
-  let maxReach = 0; // The farthest airport we can reach
+        if (airport + fuels[airport] >= fuels.length - 1) {
+            path.push(fuels[fuels.length - 1]); // Add last airport's fuel if reachable
+            break;
+        }
 
-  for (let i = 0; i < n; i++) {
-    // If we reach an airport we can't fly past, game over
-    if (i > maxReach) return -1;
+        let bestAirport = airport;
+        let maxReach = 0;
 
-    // Update how far we can go with the plane at this airport
-    maxReach = Math.max(maxReach, i + fuel[i]);
+        for (let next = 1; next <= fuels[airport]; next++) {
+            let possibleAirport = airport + next;
+            if (possibleAirport < fuels.length && possibleAirport + fuels[possibleAirport] > maxReach) {
+                maxReach = possibleAirport + fuels[possibleAirport];
+                bestAirport = possibleAirport;
+            }
+        }
 
-    // If we've reached the limit of the last plane we hired
-    if (i === position) {
-      planes++;
-      position = maxReach; // Pick the best airport we can reach from here
-
-      // If we’ve reached or passed the last airport, we’re done
-      if (position >= n - 1) return planes;
+        if (bestAirport === airport) {
+            console.log("Not possible to reach the last airport");
+            return [];
+        }
+        airport = bestAirport;
     }
-  }
-
-  // If we exit the loop without reaching the last airport, it's impossible
-  return -1;
+    return path;
 }
